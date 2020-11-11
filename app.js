@@ -13,6 +13,14 @@ const Dinosaur = function (species, weight, height, diet, where, when, fact) {
 };
 
 // Create Dino Objects
+fetch("/dino.json")
+  .then((response) => response.json())
+  .then((data) => {
+    const listDinosDetails = data.Dinos;
+    window.listOfConstructedDinos = listDinosDetails.map(
+      (dinoDetails) => new Dinosaur(...Object.values(dinoDetails))
+    );
+  });
 
 // Create Human Object
 
