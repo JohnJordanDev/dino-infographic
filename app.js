@@ -49,33 +49,39 @@ function getHumanFromFormData() {
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
 function getDietComparisonPhrase(human, dino) {
-  const preposition = human.diet === "omnivore" ? "an " : "a ";
+  const humanDiet = human.diet.toLowerCase();
+  const preposition = humanDiet.toLowerCase === "omnivore" ? "an " : "a ";
   let phrase;
-  if (human.diet === dino.diet) {
-    phrase = `You are ${preposition + human.diet}, and so is ${dino.species}.`;
+  if (humanDiet === dino.diet) {
+    phrase = `You are ${preposition + humanDiet}, and so is ${dino.species}. `;
   } else {
-    phrase = `While you are ${preposition + human.diet}, ${dino.species} is ${
+    phrase = `While you are ${preposition + humanDiet}, ${dino.species} is ${
       preposition + dino.diet
-    }`;
+    }. `;
   }
   return phrase;
 }
-function getDietComparison(human, dino) {
-  const humanDiet = human.diet;
-  const dinoDiet = dino.diet;
-  const dietComparisonBase = getDietComparisonPhrase(human, dino);
-  let dietComparisonExtra;
-  if (humanDiet === "herbavor" && dinoDiet === "herbavor") {
-    dietComparisonExtra = `You and ${dino.species} are both herbavors, yay! 
-    This means that you can have lunch together`;
-  } else if (dinoDiet === "carnivor") {
-    dietComparisonExtra = `Be careful! You might end up as lunch for ${dino.species}!`;
+
+function getDietComparisonPhraseExtra(human, dino) {
+  let dietComparisonPhraseExtra = "";
+  if (human.diet.toLowerCase() === "herbavor" && dino.diet === "herbavor") {
+    dietComparisonPhraseExtra = `You and ${dino.species} are both herbavors, yay! 
+    This means that you can have lunch together.`;
+  } else if (dino.diet === "carnivor") {
+    dietComparisonPhraseExtra = `Be careful! You might end up as lunch for ${dino.species}!`;
   }
+  return dietComparisonPhraseExtra;
+}
+
+function getDietComparison(human, dino) {
+  const dietComparisonBase = getDietComparisonPhrase(human, dino);
+  const dietComparisonExtra = getDietComparisonPhraseExtra(human, dino);
   return dietComparisonBase + dietComparisonExtra;
 }
 
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
+
 
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
@@ -86,14 +92,20 @@ function getRandomFactFromListOfFacts(listOfFacts) {
   return listOfFacts[randomIndex];
 }
 
+function addComparisonsToDinoFacts(human) {
+  window.listOfConstructedDinos.forEach((dino) => {
+    dino.facts.push(getDietComparison(human, dino));
+  });
+}
+
 // Generate Tiles for each Dino in Array
 function getAnimalInfoTile(animal) {
   const animalTile = window.document.createElement("li");
   const animalHeadlineContent = animal.name ? animal.name : animal.species;
   const isDino = animal.species !== "Human";
-  let subHeader = "Let's see how you compare to these dinosaurs!";
+  let fact;
   if (isDino) {
-    subHeader = getRandomFactFromListOfFacts(animal.facts);
+    fact = getRandomFactFromListOfFacts(animal.facts);
   }
   animalTile.setAttribute("class", "animal-tile");
   animalTile.setAttribute("id", `animal_tile_${animal.species.toLowerCase()}`);
@@ -102,11 +114,12 @@ function getAnimalInfoTile(animal) {
   </div>
   <header>
     <h4 class="animal-tile_species">${animalHeadlineContent}</h4>
-    <p>${subHeader}</p>
-  </header>
-  <ul class="animal-tile_facts">
-    <li>Weight: ${animal.weight}</li>
+  </header>`;
+  if (isDino) {
+    animalTile.innerHTML += `<ul class="animal-tile_facts">
+    <li>${fact}</li>
   </ul>`;
+  }
   return animalTile;
 }
 
@@ -143,6 +156,7 @@ window.document.addEventListener("submit", (ev) => {
   ev.preventDefault();
   window.formHuman = getHumanFromFormData();
   removeForm();
+  addComparisonsToDinoFacts(window.formHuman);
   window.document.getElementById("grid").appendChild(getListOfDinosTiles());
   addHumanAtPos(5);
 });
