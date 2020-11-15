@@ -6,7 +6,7 @@ const Dinosaur = function (species, weight, height, diet, where, when, fact) {
   this.diet = diet;
   this.where = where;
   this.when = when;
-  this.fact = fact;
+  this.facts = [fact];
   if (arguments.length !== 7) {
     console.error("Dinosaur init with 'incorrect' argument number");
   }
@@ -54,16 +54,29 @@ function getHumanFromFormData() {
 
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
+function getRandomFactFromListOfFacts(listOfFacts) {
+  const randomIndex = window.Math.floor(window.Math.random() * listOfFacts.length);
+  return listOfFacts[randomIndex];
+}
 
 // Generate Tiles for each Dino in Array
 function getAnimalInfoTile(animal) {
   const animalTile = window.document.createElement("li");
+  const animalHeadlineContent = animal.name ? animal.name : animal.species;
+  const isDino = animal.species !== "Human";
+  let subHeader = "Let's see how you compare to these dinosaurs!";
+  if (isDino) {
+    subHeader = getRandomFactFromListOfFacts(animal.facts);
+  }
   animalTile.setAttribute("class", "animal-tile");
   animalTile.setAttribute("id", `animal_tile_${animal.species.toLowerCase()}`);
   animalTile.innerHTML = `<div class="animal-tile_img-wrapper">
     <img src="${animal.imgUrl}" alt="${animal.species}" class="animal-tile_img"/>
   </div>
-  <h4 class="animal-tile_species">${animal.species}</h4>
+  <header>
+    <h4 class="animal-tile_species">${animalHeadlineContent}</h4>
+    <p>${subHeader}</p>
+  </header>
   <ul class="animal-tile_facts">
     <li>Weight: ${animal.weight}</li>
   </ul>`;
