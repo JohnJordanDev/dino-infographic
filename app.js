@@ -50,7 +50,7 @@ function getHumanFromFormData() {
 // NOTE: Weight in JSON file is in lbs, height in inches.
 function getDietComparisonPhrase(human, dino) {
   const humanDiet = human.diet.toLowerCase();
-  const preposition = humanDiet.toLowerCase === "omnivore" ? "an " : "a ";
+  const preposition = humanDiet.toLowerCase() === "omnivore" ? "an " : "a ";
   let phrase;
   if (humanDiet === dino.diet) {
     phrase = `You are ${preposition + humanDiet}, and so is ${dino.species}. `;
@@ -81,7 +81,23 @@ function getDietComparison(human, dino) {
 
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
+function getWeightComparison(human, dino) {
+  const humanWeight = human.weight;
+  const dinoWeight = dino.weight;
+  let weightPhrase = "";
+  const baseComparison = `You weigh ${humanWeight.toLocaleString()} lbs, while ${
+    dino.species
+  } weighs about ${dinoWeight.toLocaleString()} lbs. `;
+  if (dinoWeight > humanWeight) {
+    weightPhrase = `${dino.species} is heavier than you are.`;
+  } else if (dinoWeight === humanWeight) {
+    weightPhrase = `You and ${dino.species} are the same weight – what a co-incidence!`;
+  } else if (dinoWeight < humanWeight) {
+    weightPhrase = "You are actually heavier than a dinosaur – good for you!";
+  }
 
+  return baseComparison + weightPhrase;
+}
 
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
@@ -94,7 +110,12 @@ function getRandomFactFromListOfFacts(listOfFacts) {
 
 function addComparisonsToDinoFacts(human) {
   window.listOfConstructedDinos.forEach((dino) => {
-    dino.facts.push(getDietComparison(human, dino));
+    if (dino.species !== "Pigeon") {
+      dino.facts.push(
+        getDietComparison(human, dino),
+        getWeightComparison(human, dino)
+      );
+    }
   });
 }
 
