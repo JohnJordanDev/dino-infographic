@@ -23,7 +23,7 @@ h3 {
   font-family: "Oswald", sans-serif;
 }
 
-#dino_tile_list {
+#animal_tile_list {
   padding-left: 0;
   list-style: none;
   width: 100%;
@@ -32,31 +32,31 @@ h3 {
   flex-wrap: wrap;
 }
 
-.dino-tile {
+.animal-tile {
   flex-basis: 100%;
   margin: 1rem;
   background-color: #fff;
 }
 
-#dino_tile_list .dino-tile_img-wrapper {
+#animal_tile_list .animal-tile_img-wrapper {
   width: 100%;
   text-align: center;
 }
 
-.dino-tile_img {
+.animal-tile_img {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
 @media screen and (min-width: 768px) {
-  .dino-tile {
+  .animal-tile {
     flex-basis: 45%;
   }
 }
 
 @media screen and (min-width: 1200px) {
-  .dino-tile {
+  .animal-tile {
     flex-basis: 30%;
   }
 }

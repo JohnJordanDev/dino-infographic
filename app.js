@@ -31,6 +31,7 @@ class Human {
     this.weight = weight;
     this.diet = diet;
     this.imgUrl = "images/human.png";
+    this.species = "Human";
   }
 }
 
@@ -55,33 +56,42 @@ function getHumanFromFormData() {
 // NOTE: Weight in JSON file is in lbs, height in inches.
 
 // Generate Tiles for each Dino in Array
-function getDinoInfoTile(dino) {
-  const dinoTile = window.document.createElement("li");
-  dinoTile.setAttribute("class", "dino-tile");
-  dinoTile.innerHTML = `<div class="dino-tile_img-wrapper">
-    <img src="${dino.imgUrl}" alt="${dino.species}" class="dino-tile_img"/>
+function getAnimalInfoTile(animal) {
+  const animalTile = window.document.createElement("li");
+  animalTile.setAttribute("class", "animal-tile");
+  animalTile.setAttribute("id", `animal_tile_${animal.species.toLowerCase()}`);
+  animalTile.innerHTML = `<div class="animal-tile_img-wrapper">
+    <img src="${animal.imgUrl}" alt="${animal.species}" class="animal-tile_img"/>
   </div>
-  <h4 class="dino-tile_species">${dino.species}</h4>
-  <ul class="dino-tile_facts">
-    <li>Weight: ${dino.weight}</li>
+  <h4 class="animal-tile_species">${animal.species}</h4>
+  <ul class="animal-tile_facts">
+    <li>Weight: ${animal.weight}</li>
   </ul>`;
-  return dinoTile;
+  return animalTile;
 }
 
 // Add tiles to DOM
 function getListOfDinosTiles() {
   let listOfTiles = window.document.createElement("ul");
-  listOfTiles.setAttribute("id", "dino_tile_list");
+  listOfTiles.setAttribute("id", "animal_tile_list");
 
   const docFragDinoList = new DocumentFragment();
   docFragDinoList.appendChild(listOfTiles);
-  listOfTiles = docFragDinoList.getElementById("dino_tile_list");
+  listOfTiles = docFragDinoList.getElementById("animal_tile_list");
 
   window.listOfConstructedDinos.forEach((dino) => {
-    listOfTiles.appendChild(getDinoInfoTile(dino));
+    listOfTiles.appendChild(getAnimalInfoTile(dino));
   });
 
   return docFragDinoList;
+}
+
+function addHumanAtPos(position) {
+  window.document.querySelectorAll(".animal-tile").forEach((tile, index) => {
+    if (index === position - 1) {
+      tile.parentNode.insertBefore(getAnimalInfoTile(window.formHuman), tile);
+    }
+  });
 }
 
 function removeForm() {
@@ -94,4 +104,5 @@ window.document.addEventListener("submit", (ev) => {
   window.formHuman = getHumanFromFormData();
   removeForm();
   window.document.getElementById("grid").appendChild(getListOfDinosTiles());
+  addHumanAtPos(5);
 });
