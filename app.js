@@ -48,6 +48,31 @@ function getHumanFromFormData() {
 
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
+function getDietComparisonPhrase(human, dino) {
+  const preposition = human.diet === "omnivore" ? "an " : "a ";
+  let phrase;
+  if (human.diet === dino.diet) {
+    phrase = `You are ${preposition + human.diet}, and so is ${dino.species}.`;
+  } else {
+    phrase = `While you are ${preposition + human.diet}, ${dino.species} is ${
+      preposition + dino.diet
+    }`;
+  }
+  return phrase;
+}
+function getDietComparison(human, dino) {
+  const humanDiet = human.diet;
+  const dinoDiet = dino.diet;
+  const dietComparisonBase = getDietComparisonPhrase(human, dino);
+  let dietComparisonExtra;
+  if (humanDiet === "herbavor" && dinoDiet === "herbavor") {
+    dietComparisonExtra = `You and ${dino.species} are both herbavors, yay! 
+    This means that you can have lunch together`;
+  } else if (dinoDiet === "carnivor") {
+    dietComparisonExtra = `Be careful! You might end up as lunch for ${dino.species}!`;
+  }
+  return dietComparisonBase + dietComparisonExtra;
+}
 
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
@@ -55,7 +80,9 @@ function getHumanFromFormData() {
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
 function getRandomFactFromListOfFacts(listOfFacts) {
-  const randomIndex = window.Math.floor(window.Math.random() * listOfFacts.length);
+  const randomIndex = window.Math.floor(
+    window.Math.random() * listOfFacts.length
+  );
   return listOfFacts[randomIndex];
 }
 
