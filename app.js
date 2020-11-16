@@ -40,7 +40,7 @@ function getHumanFromFormData() {
   const name = window.document.getElementById("name").value;
   const feet = window.document.getElementById("feet").value;
   const inches = window.document.getElementById("inches").value;
-  const height = feet * 12 + inches;
+  const height = feet * 12 + window.parseInt(inches);
   const weight = window.document.getElementById("weight").value;
   const diet = window.document.getElementById("diet").value;
   return new Human(name, height, weight, diet);
@@ -99,7 +99,38 @@ function getWeightComparison(human, dino) {
 }
 
 // Create Dino Compare Method 3
+function getHeightPhrase(heightInches) {
+  let phrase = "";
+  const diffFeet = window.Math.floor(heightInches / 12);
+  const remainingInches = heightInches % 12;
+  if (remainingInches) {
+    phrase += `${diffFeet} feet and ${remainingInches} inches.`;
+  } else {
+    phrase += `${diffFeet} feet.`;
+  }
+  return phrase;
+}
+
 // NOTE: Weight in JSON file is in lbs, height in inches.
+function getHeightComparison(human, dino) {
+  const humanHeightInches = window.parseInt(human.height);
+  const dinoHeightInches = window.parseInt(dino.height);
+  const diffInches = dinoHeightInches - humanHeightInches;
+  let heightPhrase = `${dino.species} is ${getHeightPhrase(
+    dinoHeightInches
+  )} tall. `;
+  if (dinoHeightInches > humanHeightInches) {
+    heightPhrase = `${
+      dino.species
+    } is taller than you are  – by ${getHeightPhrase(diffInches)}`;
+  } else if (dinoHeightInches === humanHeightInches) {
+    heightPhrase += `You and ${dino.species} are the same height – what a co-incidence!`;
+  } else if (dinoHeightInches < humanHeightInches) {
+    heightPhrase += "You are actually taller than a dinosaur – good for you!";
+  }
+  return heightPhrase;
+}
+
 function getRandomFactFromListOfFacts(listOfFacts) {
   const randomIndex = window.Math.floor(
     window.Math.random() * listOfFacts.length
@@ -112,7 +143,8 @@ function addComparisonsToDinoFacts(human) {
     if (dino.species !== "Pigeon") {
       dino.facts.push(
         getDietComparison(human, dino),
-        getWeightComparison(human, dino)
+        getWeightComparison(human, dino),
+        getHeightComparison(human, dino)
       );
     }
   });
