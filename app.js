@@ -1,20 +1,20 @@
 // Create Dino Constructor
-const Dinosaur = function (species, weight, height, diet, where, when, fact) {
-  this.species = species;
-  this.weight = weight;
-  this.height = height;
-  this.diet = diet;
-  this.where = where;
-  this.when = when;
-  this.facts = [fact];
-  if (arguments.length !== 7) {
-    console.error("Dinosaur init with 'incorrect' argument number");
+class Dinosaur {
+  constructor(species, weight, height, diet, where, when, fact) {
+    this.species = species;
+    this.weight = weight;
+    this.height = height;
+    this.diet = diet;
+    this.where = where;
+    this.when = when;
+    this.facts = [fact];
+    this.imgUrl = `images/${this.species.toLowerCase()}.png`;
   }
-  this.imgUrl = `images/${this.species.toLowerCase()}.png`;
-};
+}
 
 // Create Dino Objects
-fetch("/dino.json")
+window
+  .fetch("/dino.json")
   .then((response) => response.json())
   .then((data) => {
     const listDinosDetails = data.Dinos;
