@@ -30,12 +30,15 @@ h3 {
   flex-basis: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .animal-tile {
+  max-width: 300px;
   flex-basis: 100%;
   margin: 1rem;
-  background-color: #fff;
+  padding: 1rem 1rem 2rem;
+  background-color: #f2f2f2;
 }
 
 #animal_tile_list .animal-tile_img-wrapper {
@@ -47,6 +50,13 @@ h3 {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+.animal-tile_facts {
+  list-style-type: none;
+  text-align: left;
+  font-size: 0.8rem;
+  line-height: 1.2;
 }
 
 @media screen and (min-width: 768px) {

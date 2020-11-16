@@ -65,10 +65,9 @@ function getDietComparisonPhrase(human, dino) {
 function getDietComparisonPhraseExtra(human, dino) {
   let dietComparisonPhraseExtra = "";
   if (human.diet.toLowerCase() === "herbavor" && dino.diet === "herbavor") {
-    dietComparisonPhraseExtra = `You and ${dino.species} are both herbavors, yay! 
-    This means that you can have lunch together.`;
+    dietComparisonPhraseExtra = `Yay! You and ${dino.species} can have lunch together, safely.`;
   } else if (dino.diet === "carnivor") {
-    dietComparisonPhraseExtra = `Be careful! You might end up as lunch for ${dino.species}!`;
+    dietComparisonPhraseExtra = `Be careful – you might end up as lunch for ${dino.species}!`;
   }
   return dietComparisonPhraseExtra;
 }
