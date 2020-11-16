@@ -104,9 +104,9 @@ function getHeightPhrase(heightInches) {
   const diffFeet = window.Math.floor(heightInches / 12);
   const remainingInches = heightInches % 12;
   if (remainingInches) {
-    phrase += `${diffFeet} feet and ${remainingInches} inches.`;
+    phrase += `${diffFeet} feet and ${remainingInches} inches`;
   } else {
-    phrase += `${diffFeet} feet.`;
+    phrase += `${diffFeet} feet`;
   }
   return phrase;
 }
@@ -118,11 +118,11 @@ function getHeightComparison(human, dino) {
   const diffInches = dinoHeightInches - humanHeightInches;
   let heightPhrase = `${dino.species} is ${getHeightPhrase(
     dinoHeightInches
-  )} tall. `;
+  )} in height. `;
   if (dinoHeightInches > humanHeightInches) {
-    heightPhrase = `${
+    heightPhrase += `${
       dino.species
-    } is taller than you are  – by ${getHeightPhrase(diffInches)}`;
+    } is taller than you are  – by ${getHeightPhrase(diffInches)}.`;
   } else if (dinoHeightInches === humanHeightInches) {
     heightPhrase += `You and ${dino.species} are the same height – what a co-incidence!`;
   } else if (dinoHeightInches < humanHeightInches) {
