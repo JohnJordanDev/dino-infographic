@@ -23,6 +23,12 @@ h3 {
   font-family: "Oswald", sans-serif;
 }
 
+.error-msg-visible {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #animal_tile_list {
   padding-left: 0;
   list-style: none;

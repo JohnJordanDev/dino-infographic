@@ -13,6 +13,19 @@ class Dinosaur {
 }
 
 // Create Dino Objects
+function addErrorMessage() {
+  const alertMsg = window.document.createElement("section");
+  const body = window.document.querySelector("body");
+  body.classList.add("error-msg-visible");
+  alertMsg.classList.add("error-alert");
+  alertMsg.innerHTML = `<h1>Error!</h1>
+  <h2>Could not load the <code>dino.json</code> file.</h2>
+  <p>If you are testing this
+  page locally, you need to run a local web server.</p>`;
+  body.innerHTML = "";
+  body.appendChild(alertMsg);
+}
+
 window
   .fetch("/dino.json")
   .then((response) => response.json())
@@ -21,6 +34,9 @@ window
     window.listOfConstructedDinos = listDinosDetails.map(
       (dinoDetails) => new Dinosaur(...Object.values(dinoDetails))
     );
+  })
+  .catch(() => {
+    addErrorMessage();
   });
 
 // Create Human Object
