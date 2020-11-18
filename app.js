@@ -175,7 +175,7 @@ function getAnimalInfoTile(animal) {
   if (isDino) {
     fact = getRandomFactFromListOfFacts(animal.facts);
   }
-  animalTile.setAttribute("class", "animal-tile");
+  animalTile.setAttribute("class", "grid-item animal-tile");
   animalTile.setAttribute("id", `animal_tile_${animal.species.toLowerCase()}`);
   animalTile.innerHTML = `<div class="animal-tile_img-wrapper">
     <img src="${animal.imgUrl}" alt="${animal.species}" class="animal-tile_img"/>
