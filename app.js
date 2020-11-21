@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 // Create Dino Constructor
 class Dinosaur {
   constructor(species, weight, height, diet, where, when, fact) {
@@ -9,6 +10,92 @@ class Dinosaur {
     this.when = when;
     this.facts = [fact];
     this.imgUrl = `images/${this.species.toLowerCase()}.png`;
+  }
+
+  getDietComparisonPhrase(human) {
+    const humanDiet = human.diet.toLowerCase();
+    const preposition = humanDiet.toLowerCase() === "omnivore" ? "an " : "a ";
+    let phrase;
+    if (humanDiet === this.diet) {
+      phrase = `You are ${preposition + humanDiet}, and so is ${
+        this.species
+      }. `;
+    } else {
+      phrase = `While you are ${preposition + humanDiet}, ${this.species} is ${
+        preposition + this.diet
+      }. `;
+    }
+    return phrase;
+  }
+
+  getDietComparisonPhraseExtra(human) {
+    let dietComparisonPhraseExtra = "";
+    if (human.diet.toLowerCase() === "herbavor" && this.diet === "herbavor") {
+      dietComparisonPhraseExtra = `Yay! You and ${this.species} can have lunch together, safely.`;
+    } else if (this.diet === "carnivor") {
+      dietComparisonPhraseExtra = `Be careful – you might end up as lunch for ${this.species}!`;
+    }
+    return dietComparisonPhraseExtra;
+  }
+
+  getDietComparison(human) {
+    const dietComparisonBase = this.getDietComparisonPhrase(human);
+    const dietComparisonExtra = this.getDietComparisonPhraseExtra(human);
+    return dietComparisonBase + dietComparisonExtra;
+  }
+
+  // Create Dino Compare Method 2
+  // NOTE: Weight in JSON file is in lbs, height in inches.
+  getWeightComparison(human) {
+    const humanWeight = human.weight;
+    const dinoWeight = this.weight;
+    let weightPhrase = "";
+    const baseComparison = `You weigh ${humanWeight.toLocaleString()} lbs, while ${
+      this.species
+    } weighs about ${dinoWeight.toLocaleString()} lbs. `;
+    if (dinoWeight > humanWeight) {
+      weightPhrase = `${this.species} is heavier than you are.`;
+    } else if (dinoWeight === humanWeight) {
+      weightPhrase = `You and ${this.species} are the same weight – what a co-incidence!`;
+    } else if (dinoWeight < humanWeight) {
+      weightPhrase = "You are actually heavier than a dinosaur – good for you!";
+    }
+
+    return baseComparison + weightPhrase;
+  }
+
+  // Create Dino Compare Method 3
+  // eslint-disable-next-line class-methods-use-this
+  getHeightPhrase(heightInches) {
+    let phrase = "";
+    const diffFeet = window.Math.floor(heightInches / 12);
+    const remainingInches = heightInches % 12;
+    if (remainingInches) {
+      phrase += `${diffFeet} feet and ${remainingInches} inches`;
+    } else {
+      phrase += `${diffFeet} feet`;
+    }
+    return phrase;
+  }
+
+  // NOTE: Weight in JSON file is in lbs, height in inches.
+  getHeightComparison(human) {
+    const humanHeightInches = window.parseInt(human.height);
+    const dinoHeightInches = window.parseInt(this.height);
+    const diffInches = dinoHeightInches - humanHeightInches;
+    let heightPhrase = `${this.species} is ${this.getHeightPhrase(
+      dinoHeightInches
+    )} in height. `;
+    if (dinoHeightInches > humanHeightInches) {
+      heightPhrase += `${
+        this.species
+      } is taller than you are  – by ${this.getHeightPhrase(diffInches)}.`;
+    } else if (dinoHeightInches === humanHeightInches) {
+      heightPhrase += `You and ${this.species} are the same height – what a co-incidence!`;
+    } else if (dinoHeightInches < humanHeightInches) {
+      heightPhrase += "You are actually taller than a dinosaur – good for you!";
+    }
+    return heightPhrase;
   }
 }
 
@@ -62,91 +149,6 @@ function getHumanFromFormData() {
   return new Human(name, height, weight, diet);
 }
 
-// Create Dino Compare Method 1
-// NOTE: Weight in JSON file is in lbs, height in inches.
-function getDietComparisonPhrase(human, dino) {
-  const humanDiet = human.diet.toLowerCase();
-  const preposition = humanDiet.toLowerCase() === "omnivore" ? "an " : "a ";
-  let phrase;
-  if (humanDiet === dino.diet) {
-    phrase = `You are ${preposition + humanDiet}, and so is ${dino.species}. `;
-  } else {
-    phrase = `While you are ${preposition + humanDiet}, ${dino.species} is ${
-      preposition + dino.diet
-    }. `;
-  }
-  return phrase;
-}
-
-function getDietComparisonPhraseExtra(human, dino) {
-  let dietComparisonPhraseExtra = "";
-  if (human.diet.toLowerCase() === "herbavor" && dino.diet === "herbavor") {
-    dietComparisonPhraseExtra = `Yay! You and ${dino.species} can have lunch together, safely.`;
-  } else if (dino.diet === "carnivor") {
-    dietComparisonPhraseExtra = `Be careful – you might end up as lunch for ${dino.species}!`;
-  }
-  return dietComparisonPhraseExtra;
-}
-
-function getDietComparison(human, dino) {
-  const dietComparisonBase = getDietComparisonPhrase(human, dino);
-  const dietComparisonExtra = getDietComparisonPhraseExtra(human, dino);
-  return dietComparisonBase + dietComparisonExtra;
-}
-
-// Create Dino Compare Method 2
-// NOTE: Weight in JSON file is in lbs, height in inches.
-function getWeightComparison(human, dino) {
-  const humanWeight = human.weight;
-  const dinoWeight = dino.weight;
-  let weightPhrase = "";
-  const baseComparison = `You weigh ${humanWeight.toLocaleString()} lbs, while ${
-    dino.species
-  } weighs about ${dinoWeight.toLocaleString()} lbs. `;
-  if (dinoWeight > humanWeight) {
-    weightPhrase = `${dino.species} is heavier than you are.`;
-  } else if (dinoWeight === humanWeight) {
-    weightPhrase = `You and ${dino.species} are the same weight – what a co-incidence!`;
-  } else if (dinoWeight < humanWeight) {
-    weightPhrase = "You are actually heavier than a dinosaur – good for you!";
-  }
-
-  return baseComparison + weightPhrase;
-}
-
-// Create Dino Compare Method 3
-function getHeightPhrase(heightInches) {
-  let phrase = "";
-  const diffFeet = window.Math.floor(heightInches / 12);
-  const remainingInches = heightInches % 12;
-  if (remainingInches) {
-    phrase += `${diffFeet} feet and ${remainingInches} inches`;
-  } else {
-    phrase += `${diffFeet} feet`;
-  }
-  return phrase;
-}
-
-// NOTE: Weight in JSON file is in lbs, height in inches.
-function getHeightComparison(human, dino) {
-  const humanHeightInches = window.parseInt(human.height);
-  const dinoHeightInches = window.parseInt(dino.height);
-  const diffInches = dinoHeightInches - humanHeightInches;
-  let heightPhrase = `${dino.species} is ${getHeightPhrase(
-    dinoHeightInches
-  )} in height. `;
-  if (dinoHeightInches > humanHeightInches) {
-    heightPhrase += `${
-      dino.species
-    } is taller than you are  – by ${getHeightPhrase(diffInches)}.`;
-  } else if (dinoHeightInches === humanHeightInches) {
-    heightPhrase += `You and ${dino.species} are the same height – what a co-incidence!`;
-  } else if (dinoHeightInches < humanHeightInches) {
-    heightPhrase += "You are actually taller than a dinosaur – good for you!";
-  }
-  return heightPhrase;
-}
-
 function getRandomFactFromListOfFacts(listOfFacts) {
   const randomIndex = window.Math.floor(
     window.Math.random() * listOfFacts.length
@@ -158,9 +160,9 @@ function addComparisonsToDinoFacts(human) {
   window.listOfConstructedDinos.forEach((dino) => {
     if (dino.species !== "Pigeon") {
       dino.facts.push(
-        getDietComparison(human, dino),
-        getWeightComparison(human, dino),
-        getHeightComparison(human, dino)
+        dino.getDietComparison(human),
+        dino.getWeightComparison(human),
+        dino.getHeightComparison(human)
       );
     }
   });
